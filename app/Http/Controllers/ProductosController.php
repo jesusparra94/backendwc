@@ -86,6 +86,7 @@ class ProductosController extends Controller
      public function showcategoriaslug ($slug){
 
         $categoria = Categorias::where('slug', $slug)->first();
+        
         $productos =  Productos::where('categoria_id',$categoria->id_categoria)->with('caracteristicas','categoria', 'periodosproducto.periodo')->get();
 
 
@@ -102,7 +103,11 @@ class ProductosController extends Controller
                 $value["periodosproducto"][$key1]["descuento"]  = $value1["periodo"]["descuento"];
 
                 $value["periodosproducto"][$key1]["ahorro"]  = round(($value["precio"] * $value1["periodo"]["meses"]) - $precio_con_descuento);
+
            }
+
+           $value->dominio = '';
+           $value->periodo = 2; //1 año
 
         }
 
@@ -293,6 +298,14 @@ class ProductosController extends Controller
 
               return 0;
           }
+
+     }
+
+     public function getpreciodolar(){
+
+        $response = Http::get('https://mindicador.cl/api/dolar');
+        $datos = $response->json();
+        return $datos;
 
      }
 

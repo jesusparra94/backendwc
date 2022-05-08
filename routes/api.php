@@ -53,6 +53,7 @@ Route::get('preciodominios',[PrecioDominiosController::class,'preciodominios']);
 Route::get('getos/{tipo}',[SistemaOperativoController::class,'show']);
 Route::get('getproductosbuscados/{nombre}',[ProductosController::class,'buscarproductos']);
 Route::get('getproductosxslug/{slug}',[ProductosController::class,'showslug']);
+Route::get('getpreciodolar',[ProductosController::class,'getpreciodolar']);
 
 //dominios
 Route::post('getdominio',[DominiosController::class,'getdominio']);

@@ -99,6 +99,7 @@ class DominiosController extends Controller
 
         $dominiosarray = json_decode($respdominio, true);
 
+
         return json_encode($dominiosarray) ;
 
     }

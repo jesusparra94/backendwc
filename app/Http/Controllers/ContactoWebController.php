@@ -27,8 +27,8 @@ class ContactoWebController extends Controller
                 //mail usuario
                 Mail::to($data['email'])->send(new ConsultaWeb($data['nombre'],$data['email'],$data['telefono'],$data['mensaje'],'usuario'));
 
-                //mail admin creattiva
-                Mail::to('jesus@creattiva.cl')->send(new ConsultaWeb($data['nombre'],$data['email'],$data['telefono'],$data['mensaje'],'admin'));
+                //mail admin wc
+                Mail::to('jdparrau@gmail.com')->send(new ConsultaWeb($data['nombre'],$data['email'],$data['telefono'],$data['mensaje'],'admin'));
                 return 1;
             }else{
                 return 0;

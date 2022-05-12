@@ -47,7 +47,9 @@ Route::get('getproductos/{id}',[ProductosController::class,'show']);
 Route::get('getproductoscategoria/{id}',[ProductosController::class,'showcategoria']);
 Route::get('getproductoscategoriaslug/{slug}',[ProductosController::class,'showcategoriaslug']);
 Route::get('getperiodo/{id}',[ProductosController::class,'periodosproducto']);
+
 Route::get('getperiodo/{id}/{id_periodo}',[ProductosController::class,'periodoproducto']);
+
 Route::get('dominios/{dominio}/{extension}',[PrecioDominiosController::class,'dominios']);
 Route::get('preciodominios',[PrecioDominiosController::class,'preciodominios']);
 Route::get('getos/{tipo}',[SistemaOperativoController::class,'show']);

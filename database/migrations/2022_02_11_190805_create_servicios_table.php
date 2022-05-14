@@ -18,10 +18,12 @@ class CreateServiciosTable extends Migration
             $table->integer('codigo_venta');
             $table->string('glosa');
             $table->integer('cantidad');
-            $table->unsignedBigInteger('producto_id');
+            $table->unsignedBigInteger('producto_id')->nullable();
             $table->foreign('producto_id')->references('id_producto')->on('productos');
             $table->unsignedBigInteger('periodo_id');
             $table->foreign('periodo_id')->references('id_periodo')->on('periodos');
+            $table->unsignedBigInteger('categoria_id');
+            $table->foreign('categoria_id')->references('id_categoria')->on('categorias');
             $table->string('dominio')->nullable();
             $table->dateTime('fecha_inscripcion');
             $table->date('fecha_inicio')->nullable();

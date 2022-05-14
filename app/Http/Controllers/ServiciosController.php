@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Facades\App\Flow\Flow;
-
+use Illuminate\Support\Facades\Http;
 
 date_default_timezone_set("America/Santiago");
 
@@ -43,63 +43,33 @@ class ServiciosController extends Controller
     }
     public function crearservicio(Request $request){
 
-        $empresa = Empresas::where('email', $request->datos["email"])->first();
+        $empresa = Empresas::where('email', $request->email)->first();
         $esvalido = 0;
-        $tienehosting = $this->consultarServicios($empresa->id_empresa);
 
         if(isset($empresa)){
 
-            if($empresa->tipo == 0){
-
                 if(isset($empresa->rut) &&
                     isset($empresa->email) &&
                     isset($empresa->telefono) &&
                     isset($empresa->nombre) &&
                     isset($empresa->direccion) &&
-                    isset($empresa->region) &&
+                    isset($empresa->ciudad) &&
                     isset($empresa->comuna) ){
 
-                        $esvalido = 1;
+                    $esvalido = 1;
 
                 }else{
-                   $empresa =  $this->crearempresa($request->datos);
+                   $empresa =  $this->crearempresa($request);
 
                    if(isset($empresa)){
 
                         $esvalido = 1;
                    }
                 }
-
-            }else{
-
-                if(isset($empresa->rut) &&
-                    isset($empresa->email) &&
-                    isset($empresa->telefono) &&
-                    isset($empresa->nombre) &&
-                    isset($empresa->direccion) &&
-                    isset($empresa->razonsocial) &&
-                    isset($empresa->giro) &&
-                    isset($empresa->region) &&
-                    isset($empresa->comuna) ){
-
-                        $esvalido = 1;
-
-                }else{
-
-                   $empresa =  $this->crearempresa($request->datos);
-
-                   if(isset($empresa)){
-
-                        $esvalido = 1;
-
-                   }
-
-                }
-            }
 
         }else{
 
-            $empresa =  $this->crearempresa($request->datos);
+            $empresa =  $this->crearempresa($request);
             $esvalido = 1;
         }
 
@@ -131,67 +101,72 @@ class ServiciosController extends Controller
 
             foreach ($request->carro as $key => $value) {
 
-                //datos producto
-                $producto = Productos::where('id_producto', $value["producto"]["id_producto"])->first();
+
 
                 //periodo producto
                 $periodo = Periodos::where('id_periodo', $value["periodo"])->first();
 
+                $precio_dolar = $this->getpreciodolar();
 
+                if($value["categoria_id"] == 2){
 
-                if($value["producto"]["subcategoria_id"]==31){ //dominios
+                    $descuento = 0;
 
                     $descuentof = 0;
 
+                    $precio_unitario = round($value["precio"] * 870); //aqui precio dolar
+
+                    $neto += ($precio_unitario - $descuento);
+
                 }else{
 
-                    //descuento aplicable al producto
-                    $descuentof = (($producto["precio"] * $periodo["meses"]) * $periodo["descuento"]) / 100;
+                    //datos producto
+                    $producto = Productos::where('id_producto', $value["id_producto"])->first();
 
+                    $descuento = (($producto["precio"] * $periodo["meses"]) * $periodo["descuento"]  ) / 100;
+
+                    $descuentof = 0;
+
+                    $precio_unitario = ($producto["precio"] * $periodo["meses"]);
+
+                    $neto += ($precio_unitario - $descuento);
+
+                    $descuento = round($descuento + $descuentof);
                 }
 
+                // if(isset($value["code_cupon_descuento"]) && $value["cupon_descuento"]>0){
 
-                $precio_unitario = ($producto["precio"] * $periodo["meses"]);
+                //     //validar cupones
+                //     $cupon = Cupones::where([
+                //         ['cupon','=',$value["code_cupon_descuento"]]
+                //     ])->first();
 
-                $precio_mensual = $producto["precio"];
+                //     if($cupon){
 
-                $neto += ($precio_unitario - $descuentof);
+                //         if($cupon->uso_actual<$cupon->uso_max){
 
-                $descuento = round($descuento + $descuentof);
+                //             if($cupon->tipo_descuento_id==1){
 
-                if(isset($value["code_cupon_descuento"]) && $value["cupon_descuento"]>0){
+                //                 $cupondescuento = round($cupon->valor*-1);
 
-                    //validar cupones
-                    $cupon = Cupones::where([
-                        ['cupon','=',$value["code_cupon_descuento"]]
-                    ])->first();
+                //             }elseif($cupon->tipo_descuento_id==2){
 
-                    if($cupon){
+                //                 $cupondescuento = round((($precio_unitario*$cupon->valor)*100)*-1);
 
-                        if($cupon->uso_actual<$cupon->uso_max){
+                //             }
 
-                            if($cupon->tipo_descuento_id==1){
+                //             Cupones::where([
+                //                 ['cupon','=',$value["code_cupon_descuento"]]
+                //             ])->update(['uso_actual' => ($cupon->uso_actual+1)]);
 
-                                $cupondescuento = round($cupon->valor*-1);
+                //         }else{
+                //             $cupondescuento = 0;
+                //         }
 
-                            }elseif($cupon->tipo_descuento_id==2){
-
-                                $cupondescuento = round((($precio_unitario*$cupon->valor)*100)*-1);
-
-                            }
-
-                            Cupones::where([
-                                ['cupon','=',$value["code_cupon_descuento"]]
-                            ])->update(['uso_actual' => ($cupon->uso_actual+1)]);
-
-                        }else{
-                            $cupondescuento = 0;
-                        }
-
-                    }else{
-                        $cupondescuento = 0;
-                    }
-                }
+                //     }else{
+                //         $cupondescuento = 0;
+                //     }
+                // }
 
             }
 
@@ -199,7 +174,7 @@ class ServiciosController extends Controller
             $iva = round($neto * 0.19);
             $total = $neto + $iva;
 
-            $total_usd = round($total/$dolar->precio);
+            $total_usd = 0;
 
             $venta = Ventas::create([
                                 'codigo' => $codeventa,
@@ -208,32 +183,51 @@ class ServiciosController extends Controller
                                 'iva' => $iva,
                                 'total_peso' => $total,
                                 'total_usd' => $total_usd,
-                                'precio_usd' => $dolar->precio,
+                                'precio_usd' => 0,
                                 'precio_uf' => 0,
                                 'empresa_id' => $empresa->id_empresa,
-                                'metodo_pago' => $request->datos['mediopago'],
+                                'metodo_pago' => 1,
                             ]);
 
             foreach ($request->carro as $key => $value) {
 
-                $producto = Productos::where('id_producto', $value["producto"]["id_producto"])->first();
+
                 $periodo = Periodos::where('id_periodo', $value["periodo"])->first();
-                $descuento = (($producto["precio"] * $periodo["meses"]) * $periodo["descuento"]) / 100;
-                $precio_descuento = round(($producto["precio"] * $periodo["meses"]) - $descuento);
-                $precio_unitario = ($producto["precio"] * $periodo["meses"]);
-                $precio_mensual = $producto["precio"];
+
+                if($value["categoria_id"] == 2){
+
+                    $descuento = 0;
+                    $precio_unitario = round($value["precio"] * 870) ;
+                    $precio_descuento =  $precio_unitario - $descuento;
+                    $precio_mensual = 0;
+                    $glosa = $value["producto"];
+                    $productoins = NULL;
+
+                }else{
+
+                    $producto = Productos::where('id_producto', $value["id_producto"])->first();
+
+                    $descuento = (($producto["precio"] * $periodo["meses"]) * $periodo["descuento"]) / 100;
+                    $precio_descuento = round(($producto["precio"] * $periodo["meses"]) - $descuento);
+                    $precio_unitario = ($producto["precio"] * $periodo["meses"]);
+                    $precio_mensual = $producto["precio"];
+                    $glosa = $value["nombre"].' '.$value["dominio"];
+                    $productoins = $value["id_producto"];
+
+                }
+
 
                 // creamos el/los servicios
 
-                $glosa = $value["producto"]["nombre"].' '.$value["dominio"];
 
 
                 $servicio = Servicios::create([
                                     'codigo_venta' => $venta->codigo,
                                     'glosa' => $glosa,
                                     'cantidad' => 1,
-                                    'producto_id' => $value["producto"]["id_producto"],
+                                    'producto_id' => $productoins,
                                     'periodo_id' => $value["periodo"],
+                                    'categoria_id' => $value["categoria_id"],
                                     'dominio' => $value["dominio"],
                                     'fecha_inscripcion'=> date('Y-m-d H:i:s'),
                                     'empresa_id' => $empresa->id_empresa
@@ -255,9 +249,9 @@ class ServiciosController extends Controller
 
             // pago aquí
 
-            $urlconfirmacion = "http://apiwebcompany/pagos/confirmacion";
+            $urlconfirmacion = "http://apiwebcompany.cp/pagos/confirmacion";
 
-            $urlreturn = "http://apiwebcompany/pagos/retorno";
+            $urlreturn = "http://apiwebcompany.cp/pagos/retorno";
 
             $params = array(
 
@@ -269,7 +263,7 @@ class ServiciosController extends Controller
 
                 'amount' => $total,
 
-                'email' => $request->datos["email"],
+                'email' => $request->email,
 
                 'paymentMethod' => 9,
 
@@ -318,11 +312,9 @@ class ServiciosController extends Controller
                                                 'rut' => $request->rut,
                                                 'email' => filter_var($request->email, FILTER_SANITIZE_EMAIL),
                                                 'telefono' => filter_var($request->telefono, FILTER_SANITIZE_NUMBER_INT),
-                                                'razonsocial' => filter_var($request->razonsocial, FILTER_SANITIZE_STRING),
                                                 'giro' => filter_var($request->giro, FILTER_SANITIZE_STRING),
                                                 'direccion' => filter_var($request->direccion, FILTER_SANITIZE_STRING),
-                                                'pais' => filter_var($request->pais, FILTER_SANITIZE_STRING),
-                                                'region' => $request->region,
+                                                'ciudad' => $request->ciudad,
                                                 'comuna' => $request->comuna,
                                                 'user_id' => $user_id
                                             ]);
@@ -492,4 +484,12 @@ class ServiciosController extends Controller
         return ['status'=>$existe];
 
     }
+
+    public function getpreciodolar(){
+
+        $response = Http::get('https://mindicador.cl/api/dolar');
+        $datos = $response->json();
+        return $datos;
+
+     }
 }

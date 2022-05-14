@@ -13,17 +13,12 @@ class Empresas extends Model
 
    protected $fillable = [
                 'nombre',
-                'tipo',
                 'rut',
                 'email',
                 'telefono',
-                'email_empresa',
-                'telefono_empresa',
-                'razonsocial',
                 'giro',
                 'direccion',
-                'pais',
-                'region',
+                'ciudad',
                 'comuna',
                 'user_id'
             ];

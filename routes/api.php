@@ -86,6 +86,10 @@ Route::get('getconsultarservicios/{id_empresa}',[ServiciosController::class,'con
 // ventas
 
 Route::get('getfacturaspendpago/{id}',[VentasController::class,'showpendpago']);
+Route::get('getventapagada/{codigo}',[VentasController::class,'showpagada']);
+Route::get('getventarechazada/{codigo}',[VentasController::class,'showrechazada']);
+
+
 
 // login
 

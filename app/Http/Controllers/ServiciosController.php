@@ -201,7 +201,7 @@ class ServiciosController extends Controller
                     $precio_descuento =  $precio_unitario - $descuento;
                     $precio_mensual = 0;
                     $glosa = $value["producto"];
-                    $productoins = NULL;
+                    $productoins = 4;
 
                 }else{
 

@@ -43,10 +43,12 @@ class ServiciosController extends Controller
     }
     public function crearservicio(Request $request){
 
-        $empresa = Empresas::where('email', $request->email)->first();
+        $empresa = Empresas::where('rut', $request->rut)->first();
         $esvalido = 0;
 
         if(isset($empresa)){
+
+            if($empresa->rut == $request->rut){
 
                 if(isset($empresa->rut) &&
                     isset($empresa->email) &&
@@ -66,6 +68,17 @@ class ServiciosController extends Controller
                         $esvalido = 1;
                    }
                 }
+
+            }else{
+
+                $empresa =  $this->crearempresa($request);
+
+                   if(isset($empresa)){
+
+                        $esvalido = 1;
+                   }
+
+            }
 
         }else{
 
@@ -294,7 +307,10 @@ class ServiciosController extends Controller
             $user_id = $user->id;
         }else{
 
-            $random = Str::random(8);
+            // $random = Str::random(8);
+
+            $random = 12345678;
+
 
             $user = User::create([
                 'email' => filter_var($request->email, FILTER_SANITIZE_EMAIL),
@@ -413,7 +429,7 @@ class ServiciosController extends Controller
                         'hora_pago' => date('H:i:s'),
                     ]);
 
-             return redirect()->away('http://localhost:4200/pago-exitoso');
+             return redirect()->away('http://localhost:3000/pago-exitoso');
 
     }
 
@@ -435,7 +451,7 @@ class ServiciosController extends Controller
                 'hora_pago' => date('H:i:s'),
             ]);
 
-            return redirect()->away('http://localhost:4200/pago-rechazado');
+            return redirect()->away('http://localhost:3000/pago-rechazado');
 
 
     }

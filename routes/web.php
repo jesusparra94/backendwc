@@ -25,3 +25,8 @@ Route::get('returncancel/paypal',[ServiciosController::class,'cancelTransaction'
 
 Route::match(['get','post'],'/resultado/inscripcion',[ServiciosController::class,'validarinscripcion']);
 
+// flow
+
+Route::match(['get', 'post'],'/pagos/retorno', [ServiciosController::class,'returns']);
+Route::match(['get', 'post'],'/pagos/confirmacion', [ServiciosController::class,'confirmacion']);
+

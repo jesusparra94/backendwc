@@ -262,9 +262,9 @@ class ServiciosController extends Controller
 
             // pago aquí
 
-            $urlconfirmacion = "http://apiwebcompany.cp/pagos/confirmacion";
+            $urlconfirmacion = "http://apiwebcompany.cp/api/pagos/confirmacion";
 
-            $urlreturn = "http://apiwebcompany.cp/pagos/retorno";
+            $urlreturn = "http://apiwebcompany.cp/api/pagos/retorno";
 
             $params = array(
 
@@ -307,9 +307,9 @@ class ServiciosController extends Controller
             $user_id = $user->id;
         }else{
 
-            // $random = Str::random(8);
+            $random = Str::random(8);
 
-            $random = 12345678;
+            // $random = 12345678;
 
 
             $user = User::create([
@@ -429,6 +429,7 @@ class ServiciosController extends Controller
                         'hora_pago' => date('H:i:s'),
                     ]);
 
+
              return redirect()->away('http://localhost:3000/pago-exitoso');
 
     }
@@ -506,6 +507,16 @@ class ServiciosController extends Controller
         $response = Http::get('https://mindicador.cl/api/dolar');
         $datos = $response->json();
         return $datos;
+
+     }
+
+     public function verplantilla(){
+
+        $codigo = 100003;
+
+        $venta = Ventas::where('codigo', $codigo)->with('detallesventa.servicios','empresa')->first();
+
+        return view('mails.invoice', compact('venta'));
 
      }
 }

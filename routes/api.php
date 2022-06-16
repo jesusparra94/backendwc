@@ -111,6 +111,11 @@ Route::get('/getpreguntasfrecuentesbuscadas/{nombre}',[PreguntasFrecuentesContro
 //banners
 Route::get('/getbanners', [BannersController::class,'getbanners']);
 
+// flow
+
+Route::match(['get', 'post'],'/pagos/retorno', [ServiciosController::class,'returns']);
+Route::match(['get', 'post'],'/pagos/confirmacion', [ServiciosController::class,'confirmacion']);
+
 Route::middleware('auth:sanctum')->group(function(){
 
     Route::get('/validartoken', [AuthController::class,'validartoken']);

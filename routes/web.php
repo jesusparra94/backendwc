@@ -18,6 +18,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/invoice', function () {
+    return view('mails/acceso_cuenta');
+});
+
+Route::get('/cpanel', function () {
+    return view('mails/acceso_cpanel');
+});
+
+Route::get('plantilla',[ServiciosController::class,'verplantilla']);
+
+
 Route::match(['get','post'],'/return/token',[ServiciosController::class,'validarrpago']);
 Route::get('returnsuccess/paypal',[ServiciosController::class,'successTransaction']);
 Route::get('returncancel/paypal',[ServiciosController::class,'cancelTransaction']);
@@ -25,8 +36,5 @@ Route::get('returncancel/paypal',[ServiciosController::class,'cancelTransaction'
 
 Route::match(['get','post'],'/resultado/inscripcion',[ServiciosController::class,'validarinscripcion']);
 
-// flow
 
-Route::match(['get', 'post'],'/pagos/retorno', [ServiciosController::class,'returns']);
-Route::match(['get', 'post'],'/pagos/confirmacion', [ServiciosController::class,'confirmacion']);
 

@@ -31,5 +31,10 @@ class DetalleVentas extends Model
         return $this->hasOne(Servicios::class,'id_servicio','servicio_id');
     }
 
+    public function serviciosall(){
+
+        return $this->hasMany(Servicios::class,'id_servicio','servicio_id');
+    }
+
 
 }

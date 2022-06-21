@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CaracteristicasProductos;
 use App\Models\Categorias;
 use App\Models\Periodos;
+use App\Models\Dolars;
 use App\Models\Productos;
 use App\Models\ProductosHasPeriodos;
 use Illuminate\Http\Request;
@@ -303,9 +304,11 @@ class ProductosController extends Controller
 
      public function getpreciodolar(){
 
-        $response = Http::get('https://mindicador.cl/api/dolar');
-        $datos = $response->json();
-        return $datos;
+        $precio = Dolars::first();
+
+        // $response = Http::get('https://mindicador.cl/api/dolar');
+        // $datos = $response->json();
+        return $precio;
 
      }
 

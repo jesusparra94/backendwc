@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\CarateristicasProductos;
+use App\Models\CaracteristicasProductos;
+use App\Models\Dolars;
 use App\Models\Productos;
 use Illuminate\Database\Seeder;
 
@@ -21,9 +22,25 @@ class ProductosSeeder extends Seeder
                                     'meta_title' => 'Hosting 5GB',
                                     'meta_description' => 'Hosting 5GB' ,
                                     'meta_key' => 'Hosting 5GB' ,
-                                    'precio' => 5900,
+                                    'precio' => 4500,
                                     'visible' => null,
                                     'categoria_id' => 1]);
+
+        $caracteristicas = [
+            ["nombre" => 'Dominios', "capacidad" => '1'],
+            ["nombre" => 'Disco SSD', "capacidad" => '5 GB'],
+            ["nombre" => 'Correos Electrónicos', "capacidad" => '10'],
+            ["nombre" => 'Bases de Datos', "capacidad" => '3']
+        ];
+
+        foreach ($caracteristicas as $key => $value) {
+
+            CaracteristicasProductos::create([
+                'nombre' => $value["nombre"],
+                'capacidad' => $value["capacidad"],
+                'producto_id' => $producto->id_producto
+            ]);
+        }
 
 
         $producto = Productos::create(['nombre'=> 'Hosting 10GB',
@@ -31,9 +48,25 @@ class ProductosSeeder extends Seeder
                                     'meta_title' => 'Hosting  10GB',
                                     'meta_description' => 'Hosting 10GB' ,
                                     'meta_key' => 'Hosting 10GB' ,
-                                    'precio' => 8900,
+                                    'precio' => 5500,
                                     'visible' => null,
                                     'categoria_id' => 1]);
+
+        $caracteristicas = [
+            ["nombre" => 'Dominios', "capacidad" => '2'],
+            ["nombre" => 'Disco SSD', "capacidad" => '10 GB'],
+            ["nombre" => 'Correos Electrónicos', "capacidad" => '30'],
+            ["nombre" => 'Bases de Datos', "capacidad" => '4']
+        ];
+
+        foreach ($caracteristicas as $key => $value) {
+
+            CaracteristicasProductos::create([
+                'nombre' => $value["nombre"],
+                'capacidad' => $value["capacidad"],
+                'producto_id' => $producto->id_producto
+            ]);
+        }
 
 
         $producto = Productos::create(['nombre'=> 'Hosting 20GB',
@@ -41,10 +74,26 @@ class ProductosSeeder extends Seeder
                                     'meta_title' => 'Hosting 20GB',
                                     'meta_description' => 'Hosting 20GB' ,
                                     'meta_key' => 'Hosting 20GB' ,
-                                    'precio' => 12900,
+                                    'precio' => 7500,
                                     'visible' => null,
                                     'categoria_id' => 1]);
 
+
+        $caracteristicas = [
+            ["nombre" => 'Dominios', "capacidad" => '3'],
+            ["nombre" => 'Disco SSD', "capacidad" => '20 GB'],
+            ["nombre" => 'Correos Electrónicos', "capacidad" => 'Ilimitadas'],
+            ["nombre" => 'Bases de Datos', "capacidad" => 'Ilimitadas']
+        ];
+
+        foreach ($caracteristicas as $key => $value) {
+
+            CaracteristicasProductos::create([
+                'nombre' => $value["nombre"],
+                'capacidad' => $value["capacidad"],
+                'producto_id' => $producto->id_producto
+            ]);
+        }
 
         $producto = Productos::create(['nombre'=> 'Dominios',
                                     'slug' => 'dominios',
@@ -56,6 +105,7 @@ class ProductosSeeder extends Seeder
                                     'categoria_id' => 2]);
 
 
+        $dolar = Dolars::create(['precio'=> 870]);
 
 
     }

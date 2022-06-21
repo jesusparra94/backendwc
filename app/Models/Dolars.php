@@ -5,7 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Dolar extends Model
+class Dolars extends Model
 {
     use HasFactory;
+    protected $primaryKey="id_dolar";
+
+    protected $fillable = [
+        'precio'
+    ];
 }

@@ -29,9 +29,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 //cupones
 Route::get('validarcupon/{cupon}',[CuponesController::class,'validarcupon']);
@@ -119,6 +119,8 @@ Route::match(['get', 'post'],'/pagos/confirmacion', [ServiciosController::class,
 Route::middleware('auth:sanctum')->group(function(){
 
     Route::get('/validartoken', [AuthController::class,'validartoken']);
+    Route::get('/servicoscontratados', [ServiciosController::class,'serviciosContratados']);
+
 
 });
 

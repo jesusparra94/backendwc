@@ -23,4 +23,10 @@ class Empresas extends Model
                 'user_id'
             ];
 
+
+    public function serviciosempresa(){
+
+        return $this->hasMany(Servicios::class,'empresa_id','id_empresa')->where('estado_id','=', 2);
+    }
+
 }

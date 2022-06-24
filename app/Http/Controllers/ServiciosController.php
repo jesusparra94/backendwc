@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Facades\App\Flow\Flow;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 date_default_timezone_set("America/Santiago");
@@ -519,4 +520,14 @@ class ServiciosController extends Controller
         return view('mails.invoice', compact('venta'));
 
      }
+    //  servicios contratados por usuario
+
+    public function serviciosContratados(){
+
+        $user = Auth::user();
+
+        $empresas = Empresas::where('user_id', $user->id)->with('serviciosempresa.productos')->get();
+
+        return $empresas;
+    }
 }

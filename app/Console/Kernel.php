@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     protected function scheduleTimezone(){
         return 'America/Santiago';
     }
-    
+
     /**
      * Define the application's command schedule.
      *
@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('task:getdolartoday')->everyMinute();
+        $schedule->command('task:getdolartoday')->dailyAt('04:30');
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Flow\Flow as FlowFlow;
 use App\Models\DetalleVentas;
 use App\Models\Dolar;
+use App\Models\Dolars;
 use App\Models\Empresas;
 use App\Models\Periodos;
 use App\Models\Productos;
@@ -96,7 +97,7 @@ class ServiciosController extends Controller
             if(isset($codeventa)){
                 $codeventa = $codeventa + 1;
             }else{
-                $codeventa = 100000;
+                $codeventa = 200000;
             }
 
             // consultamos el precio del dolar
@@ -200,6 +201,7 @@ class ServiciosController extends Controller
                                 'precio_usd' => 0,
                                 'precio_uf' => 0,
                                 'empresa_id' => $empresa->id_empresa,
+                                'estado_id' => 7,
                                 'metodo_pago' => 1,
                             ]);
 
@@ -503,11 +505,29 @@ class ServiciosController extends Controller
 
     }
 
-    public function getpreciodolar(){
+    public function getdolar(){
 
         $response = Http::get('https://mindicador.cl/api/dolar');
         $datos = $response->json();
-        return $datos;
+
+        $hoy = date('d-m-Y');
+        $dolarHoy = date('d-m-Y', strtotime($datos['serie'][0]['fecha']));
+
+        if($dolarHoy==$hoy){
+
+            $lastData = Dolars::max('created_at');
+
+            if(date('d-m-Y', strtotime($lastData))!==$hoy){
+
+                Dolars::create(['precio'=>$datos['serie'][0]['valor']]);
+
+            }
+
+        }
+
+        return Dolars::all();
+
+        //return date('d-m-Y', strtotime($datos['serie'][0]['fecha']));
 
      }
 

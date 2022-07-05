@@ -26,6 +26,8 @@ Route::get('/cpanel', function () {
     return view('mails/acceso_cpanel');
 });
 
+Route::get('getdolar',[ServiciosController::class,'getdolar']);
+
 Route::get('plantilla',[ServiciosController::class,'verplantilla']);
 
 

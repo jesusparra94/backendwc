@@ -21,6 +21,7 @@ class Ventas extends Model
             'precio_usd',
             'precio_uf',
             'empresa_id',
+            'estado_id',
             'estado_facturacion',
             'metodo_pago',
             'fecha_pago',

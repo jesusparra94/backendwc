@@ -52,7 +52,7 @@ class GetDolarToday extends Command
 
             if(date('d-m-Y', strtotime($lastData))!==$hoy){
 
-                Dolars::create(['precio'=>$datos['serie'][0]['valor']]);
+                Dolars::create(['precio'=> ceil($datos['serie'][0]['valor']) ]);
 
             }
 

@@ -102,8 +102,8 @@ class ServiciosController extends Controller
 
             // consultamos el precio del dolar
 
-            $dolar = Dolar::latest()
-                            ->first();
+            $precio_dolar = Dolars::orderBy('id_dolar', 'desc')->first();
+            $precio_dolar = $precio_dolar->precio;
 
             // realizamos los calculos
 
@@ -121,7 +121,6 @@ class ServiciosController extends Controller
                 //periodo producto
                 $periodo = Periodos::where('id_periodo', $value["periodo"])->first();
 
-                $precio_dolar = $this->getpreciodolar();
 
                 if($value["categoria_id"] == 2){
 
@@ -129,7 +128,7 @@ class ServiciosController extends Controller
 
                     $descuentof = 0;
 
-                    $precio_unitario = round($value["precio"] * 870); //aqui precio dolar
+                    $precio_unitario = round($value["precio"] * $precio_dolar); //aqui precio dolar
 
                     $neto += ($precio_unitario - $descuento);
 
@@ -189,7 +188,7 @@ class ServiciosController extends Controller
             $iva = round($neto * 0.19);
             $total = $neto + $iva;
 
-            $total_usd = 0;
+            $total_usd = round($neto / $precio_dolar);
 
             $venta = Ventas::create([
                                 'codigo' => $codeventa,
@@ -198,7 +197,7 @@ class ServiciosController extends Controller
                                 'iva' => $iva,
                                 'total_peso' => $total,
                                 'total_usd' => $total_usd,
-                                'precio_usd' => 0,
+                                'precio_usd' => $precio_dolar,
                                 'precio_uf' => 0,
                                 'empresa_id' => $empresa->id_empresa,
                                 'estado_id' => 7,
@@ -213,7 +212,7 @@ class ServiciosController extends Controller
                 if($value["categoria_id"] == 2){
 
                     $descuento = 0;
-                    $precio_unitario = round($value["precio"] * 870) ;
+                    $precio_unitario = round($value["precio"] * $precio_dolar) ;
                     $precio_descuento =  $precio_unitario - $descuento;
                     $precio_mensual = 0;
                     $glosa = $value["producto"];

@@ -13,12 +13,15 @@ use App\Models\Servicios;
 use App\Models\Cupones;
 use App\Models\User;
 use App\Models\Ventas;
+use App\Mail\RegistroCliente;
+use App\Mail\ConfirmacionCompra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Facades\App\Flow\Flow;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 
 date_default_timezone_set("America/Santiago");
 
@@ -97,7 +100,7 @@ class ServiciosController extends Controller
             if(isset($codeventa)){
                 $codeventa = $codeventa + 1;
             }else{
-                $codeventa = 200000;
+                $codeventa = 100001;
             }
 
             // consultamos el precio del dolar
@@ -264,9 +267,9 @@ class ServiciosController extends Controller
 
             // pago aquí
 
-            $urlconfirmacion = "http://apiwebcompany.cp/api/pagos/confirmacion";
+            $urlconfirmacion = "http://apiwebcompany.local/api/pagos/confirmacion";
 
-            $urlreturn = "http://apiwebcompany.cp/api/pagos/retorno";
+            $urlreturn = "http://apiwebcompany.local/api/pagos/retorno";
 
             $params = array(
 
@@ -313,14 +316,18 @@ class ServiciosController extends Controller
 
             // $random = 12345678;
 
+            $password = Hash::make($random);
 
             $user = User::create([
                 'email' => filter_var($request->email, FILTER_SANITIZE_EMAIL),
-                'password' => Hash::make($random),
+                'password' => $password,
                 'username' => trim($request->nombre)
             ]);
 
             $user_id = $user->id;
+
+            //enviar correo de empresa creada
+            Mail::to($request->email)->send(new RegistroCliente(trim($request->nombre),$request->email,$random));
         }
 
 
@@ -431,8 +438,11 @@ class ServiciosController extends Controller
                         'hora_pago' => date('H:i:s'),
                     ]);
 
+            //enviar correo de confirmación de compra
+            Mail::to('jdparrau@gmail.com')->send(new ConfirmacionCompra($codigoventa,$venta));
 
-             return redirect()->away('http://localhost:3000/pago-exitoso');
+
+            return redirect()->away('http://localhost:3000/pago-exitoso');
 
     }
 

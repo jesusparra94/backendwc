@@ -7,26 +7,24 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class RegistroCliente extends Mailable
+class ConfirmacionCompra extends Mailable
 {
     use Queueable, SerializesModels;
-    public $title = "Bienvenido a WebCompany SpA";
-    public $nombre;
-    public $correo;
-    public $pass;
+    public $title = "Conformación de Compra";
+    public $codigo;
+    public $venta;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($nombre,$correo,$pass)
+    public function __construct($codigo,$venta)
     {
         //
         $this->title = $this->title;
-        $this->nombre = $nombre;
-        $this->correo = $correo;
-        $this->pass = $pass;
+        $this->codigo = $codigo;
+        $this->venta = $venta;
     }
 
     /**
@@ -37,10 +35,9 @@ class RegistroCliente extends Mailable
     public function build()
     {
         $title = $this->title;
-        $nombre   = $this->nombre;
-        $correo = $this->correo;
-        $pass = $this->pass;
+        $codigo   = $this->codigo;
+        $venta = $this->venta;
 
-        return $this->view('mails.acceso_cuenta', compact('nombre','correo','pass'))->subject($title);
+        return $this->view('mails.invoice', compact('codigo','venta'))->subject($title);
     }
 }

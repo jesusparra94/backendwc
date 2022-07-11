@@ -121,7 +121,7 @@
 																								<tr>
 
 																									<td class="title-36 a-center pb-15" style="font-size:20px; line-height:40px; color:#282828; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; text-align:center; padding-bottom: 15px;">
-																										<strong>Hola Yuserly Bracho!</strong>
+																										<strong>Hola {{$nombre}}!</strong>
 																									</td>
 
 																								</tr>
@@ -137,7 +137,7 @@
                                                                                                 <tr>
 
 																									<td class="title-36 pb-15" style="font-size:20px; line-height:40px; color:#282828; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; padding-bottom: 15px;">
-																										<strong > Usuario: <span style="color:#005AD2">yuserlybracho@gmail.com</span> </strong>
+																										<strong > Usuario: <span style="color:#005AD2">{{$correo}}</span> </strong>
 																									</td>
 
 																								</tr>
@@ -145,7 +145,7 @@
                                                                                                 <tr>
 
 																									<td class="title-36 pb-15" style="font-size:20px; line-height:40px; color:#282828; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; padding-bottom: 15px;">
-																										<strong> Contraseña: <span style="color:#005AD2">12345678</span></strong>
+																										<strong> Contraseña: <span style="color:#005AD2">{{$pass}}</span></strong>
 																									</td>
 
 																								</tr>
@@ -185,7 +185,7 @@
 																		<br />
 																		<span>Todos los derechos reservados.</span>
 																		<br />
-																		<a href="mailto:info@cursalud.cl" target="_blank" class="link c-white" style="text-decoration:none; color:#ffffff;">
+																		<a href="mailto:info@webcompany.cl" target="_blank" class="link c-white" style="text-decoration:none; color:#ffffff;">
                                                                             <span class="link c-white" style="text-decoration:none; color:#ffffff;">info@webcompany.cl</span>
                                                                         </a> - <a href="www.webcompany.cl" target="_blank" class="link c-white" style="text-decoration:none; color:#ffffff;">
                                                                             <span class="link c-white" style="text-decoration:none; color:#ffffff;">www.webcompany.cl</span></a>

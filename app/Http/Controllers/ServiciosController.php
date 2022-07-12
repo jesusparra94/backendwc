@@ -448,7 +448,7 @@ class ServiciosController extends Controller
             //enviar correo de confirmación de compra - ventas@webcompany.cl
             Mail::to('ventas@webcompany.cl')->send(new ConfirmacionCompra($codigoventa,$venta));
             //enviar correo de confirmación de compra - Cliente
-            $cliente = empresas::where('id_empresa',$venta->empresa_id)-first();
+            $cliente = empresas::where('id_empresa',$venta->empresa_id)->first();
             Mail::to($cliente->email)->send(new ConfirmacionCompra($codigoventa,$venta));
 
 
@@ -591,7 +591,7 @@ class ServiciosController extends Controller
 
      public function verplantilla(){
 
-        $codigo = 100003;
+        $codigo = 100009;
 
         $venta = Ventas::where('codigo', $codigo)->with('detallesventa.servicios','empresa')->first();
 

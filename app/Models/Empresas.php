@@ -29,4 +29,9 @@ class Empresas extends Model
         return $this->hasMany(Servicios::class,'empresa_id','id_empresa')->where('estado_id','=', 2);
     }
 
+    public function ventasempresa(){
+
+        return $this->hasMany(Ventas::class,'empresa_id','id_empresa')->where('estado_id','=', 7);
+    }
+
 }

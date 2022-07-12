@@ -106,7 +106,7 @@ class ServiciosController extends Controller
             // consultamos el precio del dolar
 
             $precio_dolar = Dolars::orderBy('id_dolar', 'desc')->first();
-            $precio_dolar = $precio_dolar->precio;
+            $precio_dolar = $precio_dolar->precio+10;
 
             // realizamos los calculos
 

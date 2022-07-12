@@ -95,12 +95,12 @@ class ServiciosController extends Controller
 
             // creamos la venta
 
-            $codeventa = Ventas::max('codigo');
+            $codeventa = Ventas::max('codigo')+100;
 
             if(isset($codeventa)){
                 $codeventa = $codeventa + 1;
             }else{
-                $codeventa = 100001;
+                $codeventa = 10000;
             }
 
             // consultamos el precio del dolar

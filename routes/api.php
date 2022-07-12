@@ -120,7 +120,10 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::get('/validartoken', [AuthController::class,'validartoken']);
     Route::get('/servicoscontratados', [ServiciosController::class,'serviciosContratados']);
+    Route::get('/pendientepago', [VentasController::class,'pendientepago']);
+    Route::get('/pagarventa/{code}', [ServiciosController::class,'pagarventa']);
 
+    Route::post('logout',[AuthController::class,'logout']);
 
 });
 

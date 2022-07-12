@@ -223,21 +223,21 @@ class ServiciosController extends Controller
                         $precio_mensual = 0;
                         $glosa = $value["producto"];
                         $productoins = 4;
-    
+
                     }else{
-    
+
                         $producto = Productos::where('id_producto', $value["id_producto"])->first();
-    
+
                         $descuento = (($producto["precio"] * $periodo["meses"]) * $periodo["descuento"]) / 100;
                         $precio_descuento = round(($producto["precio"] * $periodo["meses"]) - $descuento);
                         $precio_unitario = ($producto["precio"] * $periodo["meses"]);
                         $precio_mensual = $producto["precio"];
                         $glosa = $value["nombre"].' '.$value["dominio"];
                         $productoins = $value["id_producto"];
-    
+
                     }
 
-               
+
 
 
                 // creamos el/los servicios
@@ -375,12 +375,12 @@ class ServiciosController extends Controller
          if($response["status"] == 2){
 
 
-            $this->cambiarestadoventapago($response["commerceOrder"]);
+          return  $this->cambiarestadoventapago($response["commerceOrder"]);
 
          }else{
 
 
-            $this->cambiarestadoventarechazado($response["commerceOrder"]);
+           return $this->cambiarestadoventarechazado($response["commerceOrder"]);
 
          }
 
@@ -449,7 +449,7 @@ class ServiciosController extends Controller
             Mail::to('jdparrau@gmail.com')->send(new ConfirmacionCompra($codigoventa,$venta));
 
 
-            return redirect()->away('http://localhost:3000/pago-exitoso');
+            return redirect()->away('http://localhost:3000/pago-exitoso/'.$codigoventa.'');
 
     }
 
@@ -471,26 +471,65 @@ class ServiciosController extends Controller
                 'hora_pago' => date('H:i:s'),
             ]);
 
-            return redirect()->away('http://localhost:3000/pago-rechazado');
+            return redirect()->away('http://localhost:3000/pago-rechazado/'.$codigoventa.'');
 
 
     }
 
-    public function pagarventa(Request $request){
+    public function pagarventa($code){
 
-        $venta = Ventas::where('id_venta', $request->id_venta)->first();
+        $venta = Ventas::where('codigo', $code)->with('empresa')->first();
 
-        $codeventa = $venta->codigo;
-        $mediopago = $request->mediopago;
-        if($mediopago == 1){
-        $total = $venta->total_peso;
+        if($venta){
 
-        return $this->pagowebpay($codeventa,$total,$mediopago);
+            $codeventa = $venta->codigo;
+            $total = $venta->total_peso;
+
+            $email = $venta->empresa["email"];
+
+            // pago aquí
+
+            $urlconfirmacion = "http://apiwebcompany.local/api/pagos/confirmacion";
+
+            $urlreturn = "http://apiwebcompany.local/api/pagos/retorno";
+
+            $params = array(
+
+                'commerceOrder' => $codeventa,
+
+                'subject' => "VENTA ".$codeventa,
+
+                'currency' => 'CLP',
+
+                'amount' => $total,
+
+                'email' => $email,
+
+                'paymentMethod' => 9,
+
+                'urlConfirmation' => $urlconfirmacion,
+
+                'urlReturn' => $urlreturn
+
+            );
+
+            $services = 'payment/create';
+
+            $method = "POST";
+
+            $response = Flow::send($services,$params,$method);
+
+            $destination = $response['url'].'?token='.$response['token'];
+
+            return $destination;
+
         }else{
-        $total = $venta->total_usd;
 
-        return $this->pagopaypal($codeventa,$total,$mediopago);
+            return ;
+
         }
+
+
 
     }
 

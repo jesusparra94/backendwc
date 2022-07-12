@@ -445,8 +445,11 @@ class ServiciosController extends Controller
                         'hora_pago' => date('H:i:s'),
                     ]);
 
-            //enviar correo de confirmación de compra
-            Mail::to('jdparrau@gmail.com')->send(new ConfirmacionCompra($codigoventa,$venta));
+            //enviar correo de confirmación de compra - ventas@webcompany.cl
+            Mail::to('ventas@webcompany.cl')->send(new ConfirmacionCompra($codigoventa,$venta));
+            //enviar correo de confirmación de compra - Cliente
+            $cliente = empresas::where('id_empresa',$venta->empresa_id)-first();
+            Mail::to($cliente->email)->send(new ConfirmacionCompra($codigoventa,$venta));
 
 
             return redirect()->away('http://localhost:3000/pago-exitoso/'.$codigoventa.'');

@@ -212,56 +212,63 @@ class ServiciosController extends Controller
 
                 $periodo = Periodos::where('id_periodo', $value["periodo"])->first();
 
-                if($value["categoria_id"] == 2){
 
-                    $descuento = 0;
-                    $precio_unitario = round($value["precio"] * $precio_dolar) ;
-                    $precio_descuento =  $precio_unitario - $descuento;
-                    $precio_mensual = 0;
-                    $glosa = $value["producto"];
-                    $productoins = 4;
+                if(isset($value["producto"])){
 
-                }else{
+                    if($value["categoria_id"] == 2){
 
-                    $producto = Productos::where('id_producto', $value["id_producto"])->first();
+                        $descuento = 0;
+                        $precio_unitario = round($value["precio"] * $precio_dolar) ;
+                        $precio_descuento =  $precio_unitario - $descuento;
+                        $precio_mensual = 0;
+                        $glosa = $value["producto"];
+                        $productoins = 4;
+    
+                    }else{
+    
+                        $producto = Productos::where('id_producto', $value["id_producto"])->first();
+    
+                        $descuento = (($producto["precio"] * $periodo["meses"]) * $periodo["descuento"]) / 100;
+                        $precio_descuento = round(($producto["precio"] * $periodo["meses"]) - $descuento);
+                        $precio_unitario = ($producto["precio"] * $periodo["meses"]);
+                        $precio_mensual = $producto["precio"];
+                        $glosa = $value["nombre"].' '.$value["dominio"];
+                        $productoins = $value["id_producto"];
+    
+                    }
 
-                    $descuento = (($producto["precio"] * $periodo["meses"]) * $periodo["descuento"]) / 100;
-                    $precio_descuento = round(($producto["precio"] * $periodo["meses"]) - $descuento);
-                    $precio_unitario = ($producto["precio"] * $periodo["meses"]);
-                    $precio_mensual = $producto["precio"];
-                    $glosa = $value["nombre"].' '.$value["dominio"];
-                    $productoins = $value["id_producto"];
-
-                }
+               
 
 
                 // creamos el/los servicios
 
 
 
-                $servicio = Servicios::create([
-                                    'codigo_venta' => $venta->codigo,
-                                    'glosa' => $glosa,
-                                    'cantidad' => 1,
-                                    'producto_id' => $productoins,
-                                    'periodo_id' => $value["periodo"],
-                                    'categoria_id' => $value["categoria_id"],
-                                    'dominio' => $value["dominio"],
-                                    'fecha_inscripcion'=> date('Y-m-d H:i:s'),
-                                    'empresa_id' => $empresa->id_empresa
-                                    ]);
+                    $servicio = Servicios::create([
+                                        'codigo_venta' => $venta->codigo,
+                                        'glosa' => $glosa,
+                                        'cantidad' => 1,
+                                        'producto_id' => $productoins,
+                                        'periodo_id' => $value["periodo"],
+                                        'categoria_id' => $value["categoria_id"],
+                                        'dominio' => $value["dominio"],
+                                        'fecha_inscripcion'=> date('Y-m-d H:i:s'),
+                                        'empresa_id' => $empresa->id_empresa
+                                        ]);
                  // creamos el detalle de la venta
 
-                 $detalle = DetalleVentas::create([
-                                    'cantidad' => 1,
-                                    'precio_mensual' => $precio_mensual,
-                                    'precio_unitario' => $precio_unitario,
-                                    'descuento' => $descuento,
-                                    'precio_descuento' => $precio_descuento,
-                                    'precio_pagado' => $precio_descuento,
-                                    'venta_id' => $venta->id_venta,
-                                    'servicio_id' => $servicio->id_servicio
-                                ]);
+                    $detalle = DetalleVentas::create([
+                                        'cantidad' => 1,
+                                        'precio_mensual' => $precio_mensual,
+                                        'precio_unitario' => $precio_unitario,
+                                        'descuento' => $descuento,
+                                        'precio_descuento' => $precio_descuento,
+                                        'precio_pagado' => $precio_descuento,
+                                        'venta_id' => $venta->id_venta,
+                                        'servicio_id' => $servicio->id_servicio
+                                    ]);
+
+                }
 
             }
 

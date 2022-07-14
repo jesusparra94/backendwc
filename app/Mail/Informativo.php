@@ -28,6 +28,10 @@ class Informativo extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.notificacion_servicios')->subject('Conocenos | Somos WebCompany SpA');
+        return $this->view('mails.notificacion_servicios')
+        ->subject('Conócenos | Somos WebCompany SpA')
+        ->attach(public_path() . '/Web-Company-SpA-Planes-Hosting.pdf', [
+            'mime' => 'application/pdf',
+         ]);
     }
 }

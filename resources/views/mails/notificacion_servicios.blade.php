@@ -102,7 +102,7 @@
 																	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 																		<tr>
 																			<td class="img-center px-30 pt-30 pb-0 px-15" style="font-size:0pt; line-height:0pt; text-align:center; padding-left: 15px; padding-right: 15px;">
-																				<a href="{{url('/')}}" target="_blank"><img src="{{asset('img/logo-horizontal-light.png')}}" width="300px" border="0" alt="" /></a>
+																				<a href="https://www.webcompany.cl" target="_blank"><img src="https://api.webcompany.cl/img/logo-horizontal-light.png" width="300px" border="0" alt="" /></a>
 																			</td>
 																		</tr>
 																	</table>
@@ -120,7 +120,7 @@
 
 																								<tr>
 
-																									<td class="title-36 a-center pb-15" style="font-size:20px; line-height:40px; color:#282828; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; text-align:center; padding-bottom: 15px;">
+																									<td class="title-36 a-center pb-15" style="font-size:20px; line-height:22px; color:#282828; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; text-align:center; padding-bottom: 15px;">
 																										<strong>Muy buenos días Estimado/a,</strong>
 																									</td>
 
@@ -128,7 +128,7 @@
 
                                                                                                 <tr>
 
-																									<td class="title-30 a-center pb-15" style="font-size:16px; line-height:40px; color:#282828; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; text-align:center; padding-bottom: 15px;">
+																									<td class="title-30 a-center pb-15" style="font-size:16px; line-height:22px; color:#282828; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; text-align:center; padding-bottom: 15px;">
 																										<strong>Queremos aprovechar esta oportunidad para darnos a conocer.</strong>
 																									</td>
 
@@ -177,7 +177,7 @@
 																								<tr>
 
 																									<td class="title-30 a-center pb-15" style="font-size:16px; line-height:40px; color:#2597EE; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; text-align:center; padding-bottom: 5px;">
-																									<img src="{{asset('img/user.jpg')}}" width="300px" border="0" alt="" />
+																									<img src="https://api.webcompany.cl/img/user.jpg" width="300px" border="0" alt="" />
 																									</td>
 
 																								</tr>
@@ -216,8 +216,8 @@
 																		<br />
 																		<span>Todos los derechos reservados.</span>
 																		<br />
-																		<a href="mailto:info@cursalud.cl" target="_blank" class="link c-white" style="text-decoration:none; color:#ffffff;">
-                                                                            <span class="link c-white" style="text-decoration:none; color:#ffffff;">info@webcompany.cl</span>
+																		<a href="mailto:ventas@webcompany.cl" target="_blank" class="link c-white" style="text-decoration:none; color:#ffffff;">
+                                                                            <span class="link c-white" style="text-decoration:none; color:#ffffff;">ventas@webcompany.cl</span>
                                                                         </a> - <a href="www.webcompany.cl" target="_blank" class="link c-white" style="text-decoration:none; color:#ffffff;">
                                                                             <span class="link c-white" style="text-decoration:none; color:#ffffff;">www.webcompany.cl</span></a>
 																	</td>

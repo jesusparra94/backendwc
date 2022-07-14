@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\Ventas;
 use App\Mail\RegistroCliente;
 use App\Mail\ConfirmacionCompra;
+use App\Mail\Informativo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -607,5 +608,10 @@ class ServiciosController extends Controller
         $empresas = Empresas::where('user_id', $user->id)->with('serviciosempresa.productos')->get();
 
         return $empresas;
+    }
+
+    public function enviarcorreo(){
+        //enviar correo de empresa creada
+        Mail::to('jdparrau@gmail.com')->send(new Informativo());
     }
 }

@@ -137,7 +137,7 @@
                                                                                                 <tr>
 
 																									<td class="title-36 pb-15" style="font-size:18px; line-height:22px; color:#282828; font-family:'PT Sans', Arial, sans-serif; min-width:auto !important; padding-bottom: 15px;text-align:center;">
-																									Somos <span><b>WebCompany SpA</b></span>, un emprendimiento emergente que ofrece servicios de almacenamiento para tu sitio web, cuentas de correo electrónico corporativo y venta de dominios web (.com, .cl, .net, .org, entre otros).
+																									Somos <span><b>WebCompany SpA</b></span>, un emprendimiento que ofrece servicios de almacenamiento para tu sitio web, cuentas de correo electrónico corporativo y venta de dominios web (.com, .cl, .net, .org, entre otros).
 																									</td>
 
 																								</tr>
